@@ -5,6 +5,7 @@ using UnityEngine;
 public class DestroyByContact : MonoBehaviour {
     public GameObject explosion;
     public GameObject playerExplosion;
+    public int health;
 
     void OnTriggerEnter(Collider other) {
         if (other.tag == "Boundary") {
@@ -13,8 +14,15 @@ public class DestroyByContact : MonoBehaviour {
         if (other.tag == "Player") {
             Instantiate(playerExplosion, other.transform.position, other.transform.rotation);
         }
-        Instantiate(explosion, transform.position, transform.rotation);
+        Damage(1);
         Destroy(other.gameObject);
-        Destroy(gameObject);
+    }
+
+    public void Damage(int damage) {
+        health -= damage;
+        if (health <= 0) {
+            Instantiate(explosion, transform.position, transform.rotation);
+            Destroy(gameObject);
+        }
     }
 }
